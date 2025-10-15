@@ -9,7 +9,7 @@ public class Main {
     public static void main(String[] args) {
         InputOutput inputOutput = new InputOutput();
 
-        TicTacToe gameTicTactToe = new TicTacToe(new Player("X"), new Player("O"));
+        TicTacToe gameTicTactToe = new TicTacToe();
         gameTicTactToe.play(inputOutput);
     }
 }
