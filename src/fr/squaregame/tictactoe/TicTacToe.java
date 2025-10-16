@@ -47,7 +47,7 @@ public class TicTacToe {
 
         while(line == -1 || column == -1 || !tableCells[line][column].getRepresentation().equals("   ")){
             line = inputOutput.getInputInt("Entrez une ligne") - 1;
-            column = inputOutput.getInputInt("Entrez une colone") - 1;
+            column = inputOutput.getInputInt("Entrez une colonne") - 1;
 
             if(!tableCells[line][column].getRepresentation().equals("   ")){
                 inputOutput.printMessage("Case déja prise\n");
@@ -67,7 +67,7 @@ public class TicTacToe {
             if(tableCells[line][0].getRepresentation().equals(playerSign) &&
                     tableCells[line][1].getRepresentation().equals(playerSign) &&
                     tableCells[line][2].getRepresentation().equals(playerSign)){
-                throw new PlayerWin("Le joueur a gagné");
+                throw new PlayerWin(playerSign);
             }
         }
 
@@ -75,24 +75,24 @@ public class TicTacToe {
             if(tableCells[0][column].getRepresentation().equals(playerSign) &&
                     tableCells[1][column].getRepresentation().equals(playerSign) &&
                     tableCells[2][column].getRepresentation().equals(playerSign)){
-                throw new PlayerWin("Le joueur a gagné");
+                throw new PlayerWin(playerSign);
             }
         }
 
         if(tableCells[0][0].getRepresentation().equals(playerSign)&&
                 tableCells[1][1].getRepresentation().equals(playerSign)&&
                 tableCells[2][2].getRepresentation().equals(playerSign)){
-            throw new PlayerWin("Le joueur a gagné");
+            throw new PlayerWin(playerSign);
         }
 
         if(tableCells[0][2].getRepresentation().equals(playerSign)&&
                 tableCells[1][1].getRepresentation().equals(playerSign)&&
                 tableCells[2][0].getRepresentation().equals(playerSign)){
-            throw new PlayerWin("Le joueur a gagné");
+            throw new PlayerWin(playerSign);
         }
 
         if(countTurnPlayed == size*size){
-            throw new BoardIsFull("Le plateau est complet");
+            throw new BoardIsFull("Egalité, le plateau est complet");
         }
     }
 
@@ -113,6 +113,7 @@ public class TicTacToe {
     }
 
     public void play(InputOutput inputOutput){
+        inputOutput.printMessage("Début du jeux");
         inputOutput.printMessage(display());
 
         boolean isPlay = true;
@@ -132,11 +133,17 @@ public class TicTacToe {
 
         while(isPlay){
             try{
+                inputOutput.printMessage("\nAu tour du joueur 1");
                 playerTurn(player1, inputOutput);
+                inputOutput.printMessage("\nAu tour du joueur 2");
                 playerTurn(player2, inputOutput);
 
             } catch (PlayerWin e) {
-                inputOutput.printMessage(e.getMessage());
+                if(player1.getRepresentation().equals(e.getMessage().trim())){
+                    inputOutput.printMessage("Le joueur 1 gagne");
+                }else{
+                    inputOutput.printMessage("Le joueur 2 gagne");
+                }
                 isPlay = false;
             } catch (BoardIsFull e){
                 inputOutput.printMessage(e.getMessage());
