@@ -31,4 +31,18 @@ public class InputOutput {
     public void printMessage(String message){
         System.out.println(message);
     }
+
+    public boolean isPositifResponse(String message){
+        printMessage(message);
+         String input = scanner.next().toUpperCase();
+         if(input.equals("Y")){
+             return true;
+         } else if (input.equals("N")) {
+             return false;
+         }
+         else {
+             printMessage("Erreur !!!");
+             return isPositifResponse(message);
+         }
+    }
 }
