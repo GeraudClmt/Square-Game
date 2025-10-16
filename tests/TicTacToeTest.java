@@ -1,4 +1,5 @@
 import fr.squaregame.components.Cell;
+import fr.squaregame.components.HumanPlayer;
 import fr.squaregame.components.Player;
 import fr.squaregame.exceptions.BoardIsFull;
 import fr.squaregame.exceptions.PlayerWin;
@@ -17,8 +18,8 @@ public class TicTacToeTest {
 
     @Test
     public void testBoardIsFull() {
-        Player player1 = new Player("X");
-        Player player2 = new Player("O");
+        Player player1 = new HumanPlayer("X");
+        Player player2 = new HumanPlayer("O");
         TicTacToe game = new TicTacToe();
 
         game.setOwner(0,0, player1);
@@ -40,8 +41,8 @@ public class TicTacToeTest {
 
     @Test
     public void testPlayerWinLine1() {
-        Player player1 = new Player("X");
-        Player player2 = new Player("O");
+        Player player1 = new HumanPlayer("X");
+        Player player2 = new HumanPlayer("O");
         TicTacToe game = new TicTacToe();
 
         game.setOwner(0,0, player1);
@@ -54,8 +55,8 @@ public class TicTacToeTest {
     }
     @Test
     public void testPlayerWinLine2() {
-        Player player1 = new Player("X");
-        Player player2 = new Player("O");
+        Player player1 = new HumanPlayer("X");
+        Player player2 = new HumanPlayer("O");
         TicTacToe game = new TicTacToe();
 
         game.setOwner(1,0, player1);
@@ -68,8 +69,8 @@ public class TicTacToeTest {
     }
     @Test
     public void testPlayerWinColum1() {
-        Player player1 = new Player("X");
-        Player player2 = new Player("O");
+        Player player1 = new HumanPlayer("X");
+        Player player2 = new HumanPlayer("O");
         TicTacToe game = new TicTacToe();
 
         game.setOwner(0,1, player1);
