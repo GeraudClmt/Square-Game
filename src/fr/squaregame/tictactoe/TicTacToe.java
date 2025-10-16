@@ -1,10 +1,10 @@
 package fr.squaregame.tictactoe;
 
-import fr.squaregame.components.Cell;
-import fr.squaregame.components.InputOutput;
-import fr.squaregame.components.Player;
+import fr.squaregame.components.*;
 import fr.squaregame.exceptions.BoardIsFull;
 import fr.squaregame.exceptions.PlayerWin;
+
+import java.util.Random;
 
 public class TicTacToe {
     private final int size;
@@ -41,7 +41,19 @@ public class TicTacToe {
         return sortie.toString();
     }
 
-    public int[] getMoveFromPlayer(InputOutput inputOutput) throws ArrayIndexOutOfBoundsException{
+    public int[] getMoveFromPlayer(InputOutput inputOutput, boolean isArtificialPlayer) throws ArrayIndexOutOfBoundsException{
+        if(isArtificialPlayer){
+            Random rand = new Random();
+            int x = rand.nextInt(0, size);
+            int y = rand.nextInt(0, size);
+
+            if(tableCells[x][y].getRepresentation().equals("   ")){
+                return new int[]{x, y};
+            }
+            return getMoveFromPlayer(inputOutput, true);
+        }
+
+
         int line = -1;
         int column = -1;
 
@@ -100,7 +112,12 @@ public class TicTacToe {
         int[] coordinate = new int[]{};
         while(coordinate.length < 2){
             try{
-                coordinate = getMoveFromPlayer(inputOutput);
+                if(player.getType() == Player.Type.HUMAIN){
+                    coordinate = getMoveFromPlayer(inputOutput, false);
+                }else{
+                    coordinate = getMoveFromPlayer(inputOutput, true);
+                }
+
             } catch (ArrayIndexOutOfBoundsException e) {
                 inputOutput.printMessage("Coordonnées en dehors du plateau\n");
             }
@@ -117,19 +134,34 @@ public class TicTacToe {
         inputOutput.printMessage(display());
 
         boolean isPlay = true;
-
-        String sign = inputOutput.getSign();
+        String sign1;
         String sign2;
-        player1 = new Player(sign);
-        if(sign.equals("X")){
+
+
+        boolean isHumanPlayer1 = inputOutput.isPositifResponse("Le premier joueur est un humain ? Y / N");
+        if(isHumanPlayer1){
+            sign1 = inputOutput.getSign();
+            player1 = new HumanPlayer(sign1);
+        }else {
+            sign1 = "X";
+            player1 = new ArtificialPlayer(sign1);
+        }
+
+        if(sign1.equals("X")){
             sign2 = "O";
 
         }else{
             sign2 = "X";
         }
-        player2 = new Player(sign2);
-        inputOutput.printMessage("Joueur 1 : " + sign + " et Joueur 2 : " + sign2);
 
+        boolean isHumanPlayer2 = inputOutput.isPositifResponse("Le deuxième joueur est un humain ? Y / N");
+        if(isHumanPlayer2){
+            player2 = new HumanPlayer(sign2);
+        }else{
+            player2 = new ArtificialPlayer(sign2);
+        }
+
+        inputOutput.printMessage("Joueur 1 : " + sign1 + " et Joueur 2 : " + sign2);
 
         while(isPlay){
             try{
