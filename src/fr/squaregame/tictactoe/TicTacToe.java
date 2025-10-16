@@ -109,7 +109,7 @@ public class TicTacToe {
         setOwner(coordinate[0], coordinate[1], player);
         inputOutput.printMessage(display());
 
-        isOver(player.getRepresentation());
+        isOver(" "+ player.getRepresentation() + " ");
     }
 
     public void play(InputOutput inputOutput){
