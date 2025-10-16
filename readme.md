@@ -32,6 +32,8 @@ classDiagram
 		TicTacToe --> Player : use
 		Main --> TicTacToe : use
 		Main --> InputOutput : use
+		HumanPlayer --|> Player : extends
+        ArtificialPlayer --|> Player : extends
 		class Main{
 				+main()
 		}
@@ -52,9 +54,11 @@ classDiagram
         +playerTurn() void
         +play() Boolean
     }
-    class Player{
+    class  Player{
+            <<abstract>>
 		    -representation : String
 		    +getRepresentation() String
+		    +getType() Type
     }
     class InputOutput{
 		    -scanner : Scanner
@@ -62,6 +66,12 @@ classDiagram
 		    +getSign() String
 		    +printMessage() void
 
+    }
+    class HumanPlayer{
+        
+    }
+    class ArtificialPlayer{
+        
     }
 ```
 ## Exemple de sortie console
