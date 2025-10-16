@@ -9,7 +9,7 @@ Un jeu de plateau de la société square game, codé en Java
 - un attribut `player1` de type `Player`
 - un attribut `player2`de type `Player`
 - la méthode `display` parcourt le tableau pour afficher son contenu
-- la méthode `getMoveFromPlayer` récupère l’entrée utilisateur, X et Y, qui doit être un entier dans le tableau de jeux et doit être une case libre. Recommence tant que c’est pas valide.
+- la méthode `getMoveFromPlayer` récupère l’entrée utilisateur, X et Y, qui doit être un entier dans le tableau de jeux et doit être une case libre. Recommence tant que ce n'est pas valide.
 - la méthode `setOwner` prend en paramètre les coordonnées X et Y, et le Player. Met à jour le tableau pour ajouter la case du joueur
 - la méthode `play` qui gère la logique du jeu, le jeu s’arrête si les 9 cases sont remplies
 - la méthode `isOver` retourne ”true” si trois pions sont alignés ou si le plateau est rempli
@@ -59,6 +59,7 @@ classDiagram
 		    -representation : String
 		    +getRepresentation() String
 		    +getType() Type
+		    +isPositifResponse() boolean
     }
     class InputOutput{
 		    -scanner : Scanner
