@@ -54,18 +54,15 @@ public class TicTacToe {
         }
 
 
-        int line = -1;
-        int column = -1;
+        int line = interactUser.getInputInt("Entrez une ligne") - 1;
+        int column = interactUser.getInputInt("Entrez une colonne") - 1;
 
-        while(line == -1 || column == -1 || !tableCells[line][column].getRepresentation().equals("   ")){
-            line = interactUser.getInputInt("Entrez une ligne") - 1;
-            column = interactUser.getInputInt("Entrez une colonne") - 1;
-
-            if(!tableCells[line][column].getRepresentation().equals("   ")){
-                view.printMessage("Case déja prise\n");
-            }
+        if(!tableCells[line][column].getRepresentation().equals("   ")){
+            view.printMessage("Case déja prise\n");
+            return getMoveFromPlayer(interactUser, isArtificialPlayer, view);
+        }else{
+            return new int[]{line, column};
         }
-        return new int[]{line, column};
     }
 
     public void setOwner(int x, int y, Player player){
