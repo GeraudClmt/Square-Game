@@ -64,6 +64,7 @@ classDiagram
     }
     class InteractionUtilisateur{
 		    -scanner : Scanner
+		    -view : View
 		    +getInputInt() int
 		    +getSign() String
 
