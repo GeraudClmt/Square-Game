@@ -128,40 +128,37 @@ public class TicTacToe {
 
     public void play(InteractionUtilisateur interactUser, View view){
         view.printMessage("Début du jeux");
-        view.printMessage(display());
-
         boolean isPlay = true;
-        String sign1;
-        String sign2;
-
+        String signPlayer1;
+        String signPlayer2;
 
         boolean isHumanPlayer1 = interactUser.isPositifResponse("Le premier joueur est un humain ? Y / N");
         if(isHumanPlayer1){
-            sign1 = interactUser.getSign();
-            player1 = new HumanPlayer(sign1);
+            signPlayer1 = interactUser.getSign();
+            player1 = new HumanPlayer(signPlayer1);
         }else {
-            sign1 = "X";
-            player1 = new ArtificialPlayer(sign1);
+            signPlayer1 = "X";
+            player1 = new ArtificialPlayer(signPlayer1);
         }
 
-        if(sign1.equals("X")){
-            sign2 = "O";
-
+        if(signPlayer1.equals("X")){
+            signPlayer2 = "O";
         }else{
-            sign2 = "X";
+            signPlayer2 = "X";
         }
 
         boolean isHumanPlayer2 = interactUser.isPositifResponse("Le deuxième joueur est un humain ? Y / N");
         if(isHumanPlayer2){
-            player2 = new HumanPlayer(sign2);
+            player2 = new HumanPlayer(signPlayer2);
         }else{
-            player2 = new ArtificialPlayer(sign2);
+            player2 = new ArtificialPlayer(signPlayer2);
         }
 
-        view.printMessage("Joueur 1 : " + sign1 + " et Joueur 2 : " + sign2);
+        view.printMessage("Joueur 1 : " + signPlayer1 + " et Joueur 2 : " + signPlayer2);
 
         while(isPlay){
             try{
+                view.printMessage(display());
                 view.printMessage("\nAu tour du joueur 1");
                 playerTurn(player1, interactUser, view);
                 view.printMessage("\nAu tour du joueur 2");
