@@ -2,15 +2,17 @@ package fr.squaregame.components;
 
 import java.util.Scanner;
 
-public class InputOutput {
+public class InteractionUtilisateur {
     private final Scanner scanner;
+    private final View view;
 
-    public InputOutput(){
+    public InteractionUtilisateur(View view){
         this.scanner = new Scanner(System.in);
+        this.view = view;
     }
 
     public int getInputInt(String message){
-        printMessage(message);
+        view.printMessage(message);
         return scanner.nextInt();
     }
 
@@ -18,22 +20,19 @@ public class InputOutput {
         String sign = "R";
 
         while(!sign.equals("X") && !sign.equals("O")){
-            printMessage("Choisissez X ou O");
+            view.printMessage("Choisissez X ou O");
             sign =  scanner.next().toUpperCase();
             if(!sign.equals("X") && !sign.equals("O")){
-                printMessage("Erreur de choix !");
+                view.printMessage("Erreur de choix !");
             }
         }
 
         return sign;
     }
 
-    public void printMessage(String message){
-        System.out.println(message);
-    }
 
     public boolean isPositifResponse(String message){
-        printMessage(message);
+        view.printMessage(message);
          String input = scanner.next().toUpperCase();
          if(input.equals("Y")){
              return true;
@@ -41,7 +40,7 @@ public class InputOutput {
              return false;
          }
          else {
-             printMessage("Erreur !!!");
+             view.printMessage("Erreur !!!");
              return isPositifResponse(message);
          }
     }

@@ -31,7 +31,8 @@ classDiagram
 		TicTacToe --> Cell : use
 		TicTacToe --> Player : use
 		Main --> TicTacToe : use
-		Main --> InputOutput : use
+		Main --> InteractionUtilisateur : use
+        Main --> View : use
 		HumanPlayer --|> Player : extends
         ArtificialPlayer --|> Player : extends
 		class Main{
@@ -61,12 +62,14 @@ classDiagram
 		    +getType() Type
 		    +isPositifResponse() boolean
     }
-    class InputOutput{
+    class InteractionUtilisateur{
 		    -scanner : Scanner
 		    +getInputInt() int
 		    +getSign() String
-		    +printMessage() void
 
+    }
+    class View{
+        +printMessage() void
     }
     class HumanPlayer{
         

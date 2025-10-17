@@ -41,7 +41,7 @@ public class TicTacToe {
         return sortie.toString();
     }
 
-    public int[] getMoveFromPlayer(InputOutput inputOutput, boolean isArtificialPlayer) throws ArrayIndexOutOfBoundsException{
+    public int[] getMoveFromPlayer(InteractionUtilisateur interactUser, boolean isArtificialPlayer, View view) throws ArrayIndexOutOfBoundsException{
         if(isArtificialPlayer){
             Random rand = new Random();
             int x = rand.nextInt(0, size);
@@ -50,7 +50,7 @@ public class TicTacToe {
             if(tableCells[x][y].getRepresentation().equals("   ")){
                 return new int[]{x, y};
             }
-            return getMoveFromPlayer(inputOutput, true);
+            return getMoveFromPlayer(interactUser, true, view);
         }
 
 
@@ -58,11 +58,11 @@ public class TicTacToe {
         int column = -1;
 
         while(line == -1 || column == -1 || !tableCells[line][column].getRepresentation().equals("   ")){
-            line = inputOutput.getInputInt("Entrez une ligne") - 1;
-            column = inputOutput.getInputInt("Entrez une colonne") - 1;
+            line = interactUser.getInputInt("Entrez une ligne") - 1;
+            column = interactUser.getInputInt("Entrez une colonne") - 1;
 
             if(!tableCells[line][column].getRepresentation().equals("   ")){
-                inputOutput.printMessage("Case déja prise\n");
+                view.printMessage("Case déja prise\n");
             }
         }
         return new int[]{line, column};
@@ -108,39 +108,39 @@ public class TicTacToe {
         }
     }
 
-    public void playerTurn(Player player, InputOutput inputOutput)throws PlayerWin, BoardIsFull{
+    public void playerTurn(Player player, InteractionUtilisateur interactUser, View view)throws PlayerWin, BoardIsFull{
         int[] coordinate = new int[]{};
         while(coordinate.length < 2){
             try{
                 if(player.getType() == Player.Type.HUMAIN){
-                    coordinate = getMoveFromPlayer(inputOutput, false);
+                    coordinate = getMoveFromPlayer(interactUser, false, view);
                 }else{
-                    coordinate = getMoveFromPlayer(inputOutput, true);
+                    coordinate = getMoveFromPlayer(interactUser, true, view);
                 }
 
             } catch (ArrayIndexOutOfBoundsException e) {
-                inputOutput.printMessage("Coordonnées en dehors du plateau\n");
+                view.printMessage("Coordonnées en dehors du plateau\n");
             }
         }
 
         setOwner(coordinate[0], coordinate[1], player);
-        inputOutput.printMessage(display());
+        view.printMessage(display());
 
         isOver(" "+ player.getRepresentation() + " ");
     }
 
-    public void play(InputOutput inputOutput){
-        inputOutput.printMessage("Début du jeux");
-        inputOutput.printMessage(display());
+    public void play(InteractionUtilisateur interactUser, View view){
+        view.printMessage("Début du jeux");
+        view.printMessage(display());
 
         boolean isPlay = true;
         String sign1;
         String sign2;
 
 
-        boolean isHumanPlayer1 = inputOutput.isPositifResponse("Le premier joueur est un humain ? Y / N");
+        boolean isHumanPlayer1 = interactUser.isPositifResponse("Le premier joueur est un humain ? Y / N");
         if(isHumanPlayer1){
-            sign1 = inputOutput.getSign();
+            sign1 = interactUser.getSign();
             player1 = new HumanPlayer(sign1);
         }else {
             sign1 = "X";
@@ -154,31 +154,31 @@ public class TicTacToe {
             sign2 = "X";
         }
 
-        boolean isHumanPlayer2 = inputOutput.isPositifResponse("Le deuxième joueur est un humain ? Y / N");
+        boolean isHumanPlayer2 = interactUser.isPositifResponse("Le deuxième joueur est un humain ? Y / N");
         if(isHumanPlayer2){
             player2 = new HumanPlayer(sign2);
         }else{
             player2 = new ArtificialPlayer(sign2);
         }
 
-        inputOutput.printMessage("Joueur 1 : " + sign1 + " et Joueur 2 : " + sign2);
+        view.printMessage("Joueur 1 : " + sign1 + " et Joueur 2 : " + sign2);
 
         while(isPlay){
             try{
-                inputOutput.printMessage("\nAu tour du joueur 1");
-                playerTurn(player1, inputOutput);
-                inputOutput.printMessage("\nAu tour du joueur 2");
-                playerTurn(player2, inputOutput);
+                view.printMessage("\nAu tour du joueur 1");
+                playerTurn(player1, interactUser, view);
+                view.printMessage("\nAu tour du joueur 2");
+                playerTurn(player2, interactUser, view);
 
             } catch (PlayerWin e) {
                 if(player1.getRepresentation().equals(e.getMessage().trim())){
-                    inputOutput.printMessage("Le joueur 1 gagne");
+                    view.printMessage("Le joueur 1 gagne");
                 }else{
-                    inputOutput.printMessage("Le joueur 2 gagne");
+                    view.printMessage("Le joueur 2 gagne");
                 }
                 isPlay = false;
             } catch (BoardIsFull e){
-                inputOutput.printMessage(e.getMessage());
+                view.printMessage(e.getMessage());
                 isPlay =  false;
             }
         }
