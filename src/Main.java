@@ -1,6 +1,8 @@
 import fr.squaregame.components.InteractionUtilisateur;
 import fr.squaregame.components.View;
-import fr.squaregame.tictactoe.TicTacToe;
+import fr.squaregame.games.connect4.Connect4;
+import fr.squaregame.games.gomoku.Gomoku;
+import fr.squaregame.games.tictactoe.TicTacToe;
 
 
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
@@ -12,5 +14,11 @@ public class Main {
 
         TicTacToe gameTicTactToe = new TicTacToe();
         gameTicTactToe.play(interactUser, view);
+
+        Gomoku gomokuGame = new Gomoku();
+        gomokuGame.play(interactUser, view);
+
+        Connect4 connect4Game = new Connect4();
+        connect4Game.play(interactUser, view);
     }
 }
