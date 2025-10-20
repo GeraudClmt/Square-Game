@@ -3,12 +3,12 @@ package fr.squaregame.components;
 public class Board {
     private final Cell[][] cells;
 
-    public Board(int height, int width){
+    public Board(int height, int width, String emptyCell){
         cells = new Cell[height][width];
 
         for(int i = 0; i < height; i++){
             for(int j = 0; j < width; j++){
-                cells[i][j] = new Cell();
+                cells[i][j] = new Cell(emptyCell);
             }
         }
     }
@@ -26,5 +26,9 @@ public class Board {
     }
     public int getHeight(){
         return cells.length;
+    }
+
+    public boolean isEmptyCell(int row, int col){
+        return cells[row][col].isEmpty();
     }
 }

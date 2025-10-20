@@ -13,7 +13,7 @@ public class ArtificialPlayer extends Player {
         int row = rand.nextInt(0, board.getHeight());
         int col = rand.nextInt(0, board.getWidth());
 
-        if (board.getCell(row, col).getRepresentation().equals("   ")) {
+        if (board.isEmptyCell(row, col)) {
             return new int[]{row, col};
         }
 
