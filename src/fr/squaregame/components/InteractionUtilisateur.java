@@ -12,8 +12,14 @@ public class InteractionUtilisateur {
     }
 
     public int getInputInt(String message){
-        view.printMessage(message);
-        return scanner.nextInt();
+        try{
+            view.printMessage(message);
+            return scanner.nextInt();
+        } catch (Exception e) {
+            scanner.nextLine();
+            view.printMessage("Erreur ce n'est pas un entier");
+            return getInputInt(message);
+        }
     }
 
     public String getSign(){
