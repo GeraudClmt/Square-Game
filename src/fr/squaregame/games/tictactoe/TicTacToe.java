@@ -1,106 +1,36 @@
-package fr.squaregame.tictactoe;
+package fr.squaregame.games.tictactoe;
 
 import fr.squaregame.components.*;
 import fr.squaregame.exceptions.BoardIsFull;
 import fr.squaregame.exceptions.PlayerWin;
+import fr.squaregame.games.Game;
 
-import java.util.Random;
-
-public class TicTacToe {
-    private final int size;
+public class TicTacToe extends Game {
     private Player player1;
     private Player player2;
-    private Cell[][] tableCells;
     private int countTurnPlayed;
+    private final int winningLength;
 
     public TicTacToe(){
-        this.size = 3;
+        super.width = 3;
+        super.height = 3;
+        super.board = new Board(height, width);
+        winningLength = 3;
         countTurnPlayed = 0;
-
-        this.tableCells = new Cell[this.size][this.size];
-        for(int i = 0; i < tableCells.length; i++){
-            for(int j = 0; j < tableCells.length; j++){
-                tableCells[i][j] = new Cell();
-            }
-        }
-
-    }
-
-    public String display(){
-        StringBuilder sortie = new StringBuilder();
-        for(int i = 0; i < tableCells.length; i++){
-            sortie.append("\n").append("-".repeat(size * 4+1)).append("\n");
-            for(int j = 0; j < tableCells.length; j++){
-                sortie.append("|").append(tableCells[i][j].getRepresentation());
-                if(j == size - 1){
-                    sortie.append("|");
-                }
-            }
-        }
-        sortie.append("\n").append("-".repeat(size * 4+1));
-        return sortie.toString();
-    }
-
-    public int[] getMoveFromPlayer(InteractionUtilisateur interactUser, boolean isArtificialPlayer, View view) throws ArrayIndexOutOfBoundsException{
-        if(isArtificialPlayer){
-            Random rand = new Random();
-            int x = rand.nextInt(0, size);
-            int y = rand.nextInt(0, size);
-
-            if(tableCells[x][y].getRepresentation().equals("   ")){
-                return new int[]{x, y};
-            }
-            return getMoveFromPlayer(interactUser, true, view);
-        }
-
-
-        int line = interactUser.getInputInt("Entrez une ligne") - 1;
-        int column = interactUser.getInputInt("Entrez une colonne") - 1;
-
-        if(!tableCells[line][column].getRepresentation().equals("   ")){
-            view.printMessage("Case déja prise\n");
-            return getMoveFromPlayer(interactUser, isArtificialPlayer, view);
-        }else{
-            return new int[]{line, column};
-        }
     }
 
     public void setOwner(int x, int y, Player player){
-        tableCells[x][y] = new Cell(player.getRepresentation());
+        board.setCell(x, y, new Cell(player.getRepresentation()));
         countTurnPlayed++;
     }
 
-    public void isOver(String playerSign)throws PlayerWin, BoardIsFull {
-
-        for(int line = 0; line < size; line++){
-            if(tableCells[line][0].getRepresentation().equals(playerSign) &&
-                    tableCells[line][1].getRepresentation().equals(playerSign) &&
-                    tableCells[line][2].getRepresentation().equals(playerSign)){
-                throw new PlayerWin(playerSign);
-            }
+    public void isOver(int row, int col)throws PlayerWin, BoardIsFull {
+        if(countAlignement(row, col) >= winningLength){
+            throw new PlayerWin(board.getCell(row, col).getRepresentation());
         }
 
-        for(int column = 0; column < size; column++){
-            if(tableCells[0][column].getRepresentation().equals(playerSign) &&
-                    tableCells[1][column].getRepresentation().equals(playerSign) &&
-                    tableCells[2][column].getRepresentation().equals(playerSign)){
-                throw new PlayerWin(playerSign);
-            }
-        }
-
-        if(tableCells[0][0].getRepresentation().equals(playerSign)&&
-                tableCells[1][1].getRepresentation().equals(playerSign)&&
-                tableCells[2][2].getRepresentation().equals(playerSign)){
-            throw new PlayerWin(playerSign);
-        }
-
-        if(tableCells[0][2].getRepresentation().equals(playerSign)&&
-                tableCells[1][1].getRepresentation().equals(playerSign)&&
-                tableCells[2][0].getRepresentation().equals(playerSign)){
-            throw new PlayerWin(playerSign);
-        }
-
-        if(countTurnPlayed == size*size){
+        if(countTurnPlayed == width * height){
+            System.out.println("C'est plein ");
             throw new BoardIsFull("Egalité, le plateau est complet");
         }
     }
@@ -109,21 +39,16 @@ public class TicTacToe {
         int[] coordinate = new int[]{};
         while(coordinate.length < 2){
             try{
-                if(player.getType() == Player.Type.HUMAIN){
-                    coordinate = getMoveFromPlayer(interactUser, false, view);
-                }else{
-                    coordinate = getMoveFromPlayer(interactUser, true, view);
-                }
-
+                coordinate = player.getCoordinates(interactUser, view, board);
             } catch (ArrayIndexOutOfBoundsException e) {
                 view.printMessage("Coordonnées en dehors du plateau\n");
             }
         }
 
         setOwner(coordinate[0], coordinate[1], player);
-        view.printMessage(display());
+        view.display(board);
 
-        isOver(" "+ player.getRepresentation() + " ");
+        isOver(coordinate[0], coordinate[1]);
     }
 
     public void play(InteractionUtilisateur interactUser, View view){
@@ -158,7 +83,7 @@ public class TicTacToe {
 
         while(isPlay){
             try{
-                view.printMessage(display());
+                view.display(board);
                 view.printMessage("\nAu tour du joueur 1");
                 playerTurn(player1, interactUser, view);
                 view.printMessage("\nAu tour du joueur 2");
@@ -176,6 +101,5 @@ public class TicTacToe {
                 isPlay =  false;
             }
         }
-
     }
 }
