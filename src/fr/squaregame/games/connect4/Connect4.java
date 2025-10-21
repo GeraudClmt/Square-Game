@@ -10,6 +10,7 @@ public class Connect4 extends Game {
     public Connect4(){
         super.width = 7;
         super.height = 6;
+        super.signList = new String[]{"\u001B[91m●\u001B[0m", "\u001B[93m●\u001B[0m"};
         super.board = new Board(height, width, " ");
         super.winningLength = 4;
         super.countTurnPlayed = 0;
