@@ -1,5 +1,6 @@
 package fr.squaregame.components;
 
+import java.util.List;
 import java.util.Scanner;
 
 public class InteractionUtilisateur {
@@ -36,7 +37,6 @@ public class InteractionUtilisateur {
         return sign;
     }
 
-
     public boolean isPositifResponse(String message){
         view.printMessage(message);
          String input = scanner.next().toUpperCase();
@@ -50,4 +50,23 @@ public class InteractionUtilisateur {
              return isPositifResponse(message);
          }
     }
+
+    public int getGameChoice(List<String> gameList){
+        for(String message : gameList){
+            view.printMessage(message);
+        }
+        try{
+            int choice = scanner.nextInt();
+            if(choice >= 1 && choice < gameList.toArray().length +1 ){
+                return choice;
+            }
+            view.printMessage("Erreur le choix n'est pas valide");
+            return getGameChoice(gameList);
+        } catch (Exception e) {
+            scanner.nextLine();
+            view.printMessage("Erreur ce n'est pas un entier");
+            return getGameChoice(gameList);
+        }
+    }
+
 }
