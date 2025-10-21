@@ -12,6 +12,7 @@ public abstract class Game {
     protected int height;
     protected int countTurnPlayed;
     protected int winningLength;
+    protected String[] signList;
 
     public void setOwner(int x, int y, Player player){
         board.setCell(x, y, new Cell(player.getRepresentation()));
@@ -26,6 +27,10 @@ public abstract class Game {
         if(countTurnPlayed == width * height){
             throw new BoardIsFull("Egalité, le plateau est complet");
         }
+    }
+
+    public String getBoardToString(){
+        return  board.toString();
     }
 
     public int countAlignement(int row, int col ){
@@ -112,17 +117,17 @@ public abstract class Game {
 
         boolean isHumanPlayer1 = interactUser.isPositifResponse("Le premier joueur est un humain ? Y / N");
         if(isHumanPlayer1){
-            signPlayer1 = interactUser.getSign();
+            signPlayer1 = interactUser.getSign(signList);
             player1 = new HumanPlayer(signPlayer1);
         }else {
-            signPlayer1 = "X";
+            signPlayer1 = signList[0];
             player1 = new ArtificialPlayer(signPlayer1);
         }
 
-        if(signPlayer1.equals("X")){
-            signPlayer2 = "O";
+        if(signPlayer1.equals(signList[0])){
+            signPlayer2 = signList[1];
         }else{
-            signPlayer2 = "X";
+            signPlayer2 = signList[0];
         }
 
         boolean isHumanPlayer2 = interactUser.isPositifResponse("Le deuxième joueur est un humain ? Y / N");
@@ -143,11 +148,7 @@ public abstract class Game {
                 playerTurn(player2, interactUser, view);
 
             } catch (PlayerWin e) {
-                if(player1.getRepresentation().equals(e.getMessage().trim())){
-                    view.printMessage("Le joueur 1 gagne");
-                }else{
-                    view.printMessage("Le joueur 2 gagne");
-                }
+                view.printMessage("Le joueur " + e.getMessage() + " gagne");
                 isPlay = false;
             } catch (BoardIsFull e){
                 view.printMessage(e.getMessage());
