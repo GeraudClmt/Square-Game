@@ -1,5 +1,8 @@
 package fr.squaregame.components;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Board {
     private final Cell[][] cells;
 
@@ -49,6 +52,32 @@ public class Board {
 
     public boolean isEmptyCell(int row, int col){
         return cells[row][col].isEmpty();
+    }
+
+    public List<int[]> getListPositionCellsEmpty(){
+        List<int[]> listCellEmpty = new ArrayList<>();
+
+        for (int i = 0; i < cells.length; i++){
+            for(int j = 0; j < cells[0].length; j++){
+                if(cells[i][j].isEmpty()){
+                    listCellEmpty.add(new int[]{i, j});
+                }
+            }
+        }
+
+        return listCellEmpty;
+    }
+
+    public List<String> importBoar(){
+        List<String> result = new ArrayList<>();
+
+        for (int i = 0; i < cells.length; i++){
+            for(int j = 0; j < cells[0].length; j++){
+                result.add(cells[i][j].getRepresentation());
+            }
+        }
+
+        return result;
     }
 
 }
