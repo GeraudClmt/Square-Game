@@ -1,8 +1,15 @@
-package fr.squaregame.games;
+package fr.squaregame.controller;
 
-import fr.squaregame.components.*;
 import fr.squaregame.exceptions.BoardIsFull;
 import fr.squaregame.exceptions.PlayerWin;
+import fr.squaregame.model.*;
+import fr.squaregame.model.player.ArtificialPlayer;
+import fr.squaregame.model.player.HumanPlayer;
+import fr.squaregame.model.player.Player;
+import fr.squaregame.view.InteractionUtilisateur;
+import fr.squaregame.view.View;
+
+import java.util.Random;
 
 public abstract class Game {
     protected Player player1;
@@ -107,8 +114,6 @@ public abstract class Game {
         return maxOccurence;
     }
 
-    public abstract void playerTurn(Player player, InteractionUtilisateur interactUser, View view)throws PlayerWin, BoardIsFull;
-
     public void play(InteractionUtilisateur interactUser, View view){
         view.printMessage("Début du jeux");
         boolean isPlay = true;
@@ -141,7 +146,7 @@ public abstract class Game {
 
         while(isPlay){
             try{
-                view.display(board);
+                view.printMessage(board.toString());
                 view.printMessage("\nAu tour du joueur 1");
                 playerTurn(player1, interactUser, view);
                 view.printMessage("\nAu tour du joueur 2");
@@ -155,5 +160,50 @@ public abstract class Game {
                 isPlay =  false;
             }
         }
+    }
+
+    public int[] getCoordinates(InteractionUtilisateur interactUser, View view) throws ArrayIndexOutOfBoundsException {
+        int line = interactUser.getInputInt("Entrez une ligne") - 1;
+        int column = interactUser.getInputInt("Entrez une colonne") - 1;
+
+        if(!board.getCell(line, column).getRepresentation().equals("   ")){
+            view.printMessage("Case déja prise\n");
+            return getCoordinates(interactUser, view);
+        }else{
+            return new int[]{line, column};
+        }
+    }
+
+    public int[] getCoordinatesForArtificialPlayer(InteractionUtilisateur interactUser, View view) throws ArrayIndexOutOfBoundsException {
+        Random rand = new Random();
+        int row = rand.nextInt(0, board.getHeight());
+        int col = rand.nextInt(0, board.getWidth());
+
+        if (board.isEmptyCell(row, col)) {
+            return new int[]{row, col};
+        }
+
+        return getCoordinatesForArtificialPlayer(interactUser, view);
+    }
+
+    public void playerTurn(Player player, InteractionUtilisateur interactUser, View view)throws PlayerWin, BoardIsFull{
+        int[] coordinate = new int[]{};
+        while(coordinate.length < 2){
+            try{
+                if(player instanceof ArtificialPlayer){
+                    coordinate = getCoordinatesForArtificialPlayer(interactUser, view);
+                }else{
+                    coordinate = getCoordinates(interactUser, view);
+                }
+
+            } catch (ArrayIndexOutOfBoundsException e) {
+                view.printMessage("Coordonnées en dehors du plateau\n");
+            }
+        }
+
+        setOwner(coordinate[0], coordinate[1], player);
+        view.printMessage(board.toString());
+
+        isOver(coordinate[0], coordinate[1]);
     }
 }

@@ -1,8 +1,8 @@
-import fr.squaregame.components.InteractionUtilisateur;
-import fr.squaregame.components.View;
-import fr.squaregame.games.connect4.Connect4;
-import fr.squaregame.games.gomoku.Gomoku;
-import fr.squaregame.games.tictactoe.TicTacToe;
+import fr.squaregame.view.InteractionUtilisateur;
+import fr.squaregame.view.View;
+import fr.squaregame.controller.games.Connect4;
+import fr.squaregame.controller.games.Gomoku;
+import fr.squaregame.controller.games.TicTacToe;
 
 import java.util.List;
 

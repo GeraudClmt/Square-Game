@@ -1,4 +1,7 @@
-package fr.squaregame.components;
+package fr.squaregame.model.player;
+
+import fr.squaregame.model.Board;
+import fr.squaregame.model.Cell;
 
 import java.util.ArrayList;
 import java.util.List;

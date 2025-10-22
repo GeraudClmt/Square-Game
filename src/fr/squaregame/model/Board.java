@@ -1,4 +1,4 @@
-package fr.squaregame.components;
+package fr.squaregame.model;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package fr.squaregame.components;
+package fr.squaregame.view;
 
 import java.util.List;
 import java.util.Scanner;

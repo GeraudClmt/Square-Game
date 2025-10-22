@@ -1,4 +1,4 @@
-package fr.squaregame.components;
+package fr.squaregame.model;
 
 public class Cell {
     private final String representation;
