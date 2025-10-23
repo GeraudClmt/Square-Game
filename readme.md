@@ -114,6 +114,47 @@ classDiagram
         + getGameChoice() int
     }
 ```
+## Diagramme de séquence
+```mermaid
+---
+title: Jeu TicTacToe
+---
+sequenceDiagram
+    autonumber
+    participant M as Main
+    participant SG as SquareGame
+    participant IU as InteractionUtilisateur
+    participant G as TicTacToe (Game)
+    participant B as Board
+    participant P1 as Player1
+    participant P2 as Player2
+    participant V as View
+
+    M->>SG: start()
+    SG->>IU: getGameChoice()
+    IU-->>SG: choix = TicTacToe
+    SG->>G: new TicTacToe()
+    G->>B: new Board(width, height)
+    G->>P1: new HumanPlayer()
+    G->>P2: new ArtificialPlayer()
+
+    loop tant que !G.isOver()
+        G->>P1: playerTurn()
+        alt joueur humain
+            G->>IU: getCoordinates()
+            IU-->>G: [x, y]
+        else joueur IA
+            G->>G: getCoordinatesForArtificialPlayer()
+        end
+        G->>B: setCell(x, y, P1.getRepresentation())
+        G->>V: printMessage("Plateau actuel")
+        B-->>G: toString()
+
+        G->>G: isOver()
+    end
+
+    G->>V: printMessage("Fin de la partie !")
+```
 ## Exemple de sortie console
 ```bash
 -------------
