@@ -71,7 +71,7 @@ public abstract class Game {
      * @param col colonne de référence
      * @return la longueur maximale d'alignement trouvée
      */
-    public int countAlignement(int row, int col ){
+    protected int countAlignement(int row, int col ){
         int maxOccurence = 0;
         int countOccurence = 0;
         int currentRow = row;
@@ -207,7 +207,7 @@ public abstract class Game {
      * @return un tableau [ligne, colonne]
      * @throws ArrayIndexOutOfBoundsException si la saisie sort du plateau (gérée par relance)
      */
-    public int[] getCoordinates(InteractionUtilisateur interactUser, View view) throws ArrayIndexOutOfBoundsException {
+    protected int[] getCoordinates(InteractionUtilisateur interactUser, View view) throws ArrayIndexOutOfBoundsException {
         int line = interactUser.getInputInt("Entrez une ligne") - 1;
         int column = interactUser.getInputInt("Entrez une colonne") - 1;
 
@@ -227,7 +227,7 @@ public abstract class Game {
      * @return un tableau [ligne, colonne]
      * @throws ArrayIndexOutOfBoundsException si la case tirée est invalide (relance jusqu'à valide)
      */
-    public int[] getCoordinatesForArtificialPlayer(InteractionUtilisateur interactUser, View view) throws ArrayIndexOutOfBoundsException {
+    protected int[] getCoordinatesForArtificialPlayer(InteractionUtilisateur interactUser, View view) throws ArrayIndexOutOfBoundsException {
         Random rand = new Random();
         int row = rand.nextInt(0, board.getHeight());
         int col = rand.nextInt(0, board.getWidth());
@@ -248,7 +248,7 @@ public abstract class Game {
      * @throws PlayerWin si le coup entraîne une victoire
      * @throws BoardIsFull si le plateau est rempli sans vainqueur
      */
-    public void playerTurn(Player player, InteractionUtilisateur interactUser, View view)throws PlayerWin, BoardIsFull{
+    private void playerTurn(Player player, InteractionUtilisateur interactUser, View view)throws PlayerWin, BoardIsFull{
         int[] coordinate = new int[]{};
         while(coordinate.length < 2){
             try{

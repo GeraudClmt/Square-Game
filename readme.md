@@ -22,61 +22,96 @@ Un jeu de plateau de la société square game, codé en Java
 - Un attribut `representation` qui prend comme valeur “X” ou “O”
 - Une méthode `getRepresentation` qui retourne la representation
 
-## Diagramme UML
+## Diagramme UMLœ
 ```mermaid
 ---
 title: Jeu TicTacToe
 ---
 classDiagram
-		TicTacToe --> Cell : use
-		TicTacToe --> Player : use
-		Main --> TicTacToe : use
-		Main --> InteractionUtilisateur : use
-        Main --> View : use
-		HumanPlayer --|> Player : extends
-        ArtificialPlayer --|> Player : extends
-		class Main{
-				+main()
-		}
-    class Cell{
-		    -representation : String
-        +getRepresentation()String
+    Main --> SquareGame : use
+    SquareGame --> Game : use
+    Game <|-- TicTacToe : extends
+    Game <|-- Gomoku : extends
+    Game <|-- Connect4 : extends
+    Game --> Board : use
+    Game --> Cell : use
+    Game --> Player : use
+    Game --> View : use
+    Game --> InteractionUtilisateur : use
+    Board --> Cell : use
+    Player <|-- HumanPlayer : extends
+    Player <|-- ArtificialPlayer : extends
+
+    class Main{
+        +main()
+    }
+    class SquareGame{
+        +start()
+    }
+    class Game{
+        <<abstract>>
+        #player1 : Player
+        #player2 : Player
+        #board : Board
+        #width : int
+        #height : int
+        #countTurnPlayed : int
+        #winningLength : int
+        #signList : String[]
+        +setOwner() void
+        +isOver() void
+        +getBoardToString() String
+        +countAlignement() int
+        +play(): void
+        +getCoordinates() int[]
+        +getCoordinatesForArtificialPlayer() int[]
+        +playerTurn() void
     }
     class TicTacToe{
-		    -size : int
-		    -tableCells : Cell[][]
-		    -player1 : Player
-		    -player2 : Player
-		    -countTurnPLayed : int
-        +display() String
-        +getMoveFromPlayer() int[]
-        +setOwner(int, int, Player) void
-        +isOver() Boolean
-        +playerTurn() void
-        +play() Boolean
     }
-    class  Player{
-            <<abstract>>
-		    -representation : String
-		    +getRepresentation() String
-		    +getType() Type
-		    +isPositifResponse() boolean
+    class Gomoku{
     }
-    class InteractionUtilisateur{
-		    -scanner : Scanner
-		    -view : View
-		    +getInputInt() int
-		    +getSign() String
+    class Connect4{
+        -rand : Random
+        +getCoordinates() int[]
+        +getCoordinatesForArtificialPlayer() int[]
+        -getRow() int
+    }
+    class Board{
+        -cells : Cell[][]
+        +toString() : String
+        +getCell() : Cell
+        +setCell() : void
+        +getWidth() : int
+        +getHeight() : int
+        +isEmptyCell(): Boolean
+    }
+    class Cell{
+        +representation : String
+        +getRepresentation() : String
+        +isEmpty() : Boolean
+    }
+    class Player{
+        <<abstract>>
+        -representation : String
+        +getRepresentation() : String
+    }
+    class HumanPlayer{
+
+    }
+    class ArtificialPlayer{
 
     }
     class View{
         +printMessage() void
     }
-    class HumanPlayer{
-        
-    }
-    class ArtificialPlayer{
-        
+    class InteractionUtilisateur{
+        -scanner : Scanner
+        -view : View
+        +getInputInt() : int
+        +getSign() String
+        +isPositifResponse() Boolean
+        + getGameChoice() int
     }
 ```
 ## Exemple de sortie console
