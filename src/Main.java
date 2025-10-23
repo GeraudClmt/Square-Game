@@ -1,5 +1,8 @@
 import fr.squaregame.controller.SquareGame;
 
+/**
+ * Lancement du Main
+ */
 public class Main {
     /**
      * Lancement de l'application

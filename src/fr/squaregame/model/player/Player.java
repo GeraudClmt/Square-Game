@@ -1,9 +1,5 @@
 package fr.squaregame.model.player;
 
-import fr.squaregame.model.Board;
-import fr.squaregame.view.InteractionUtilisateur;
-import fr.squaregame.view.View;
-
 /**
  * Représente un joueur (humain ou artificiel) avec une représentation de pion.
  */
@@ -21,6 +17,7 @@ public abstract class Player {
 
     /**
      * Retourne la représentation du joueur.
+     * @return La représentation du joueur
      */
     public String getRepresentation(){
         return representation;

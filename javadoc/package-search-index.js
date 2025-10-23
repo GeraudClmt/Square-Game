@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"fr.squaregame.controller"},{"l":"fr.squaregame.exceptions"},{"l":"fr.squaregame.model"},{"l":"fr.squaregame.model.player"},{"l":"fr.squaregame.view"}];updateSearchResults();

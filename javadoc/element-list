@@ -1,0 +1,6 @@
+unnamed package
+fr.squaregame.controller
+fr.squaregame.exceptions
+fr.squaregame.model
+fr.squaregame.model.player
+fr.squaregame.view

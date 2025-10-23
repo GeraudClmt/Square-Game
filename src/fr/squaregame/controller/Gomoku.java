@@ -6,6 +6,9 @@ import fr.squaregame.model.Board;
  * Implémentation du jeu Gomoku (aligner 5 pions) sur une grille 15x15.
  */
 public class Gomoku extends Game {
+    /**
+     * Constructeur de Gomoku
+     */
     public Gomoku(){
         super.width = 15;
         super.height = 15;

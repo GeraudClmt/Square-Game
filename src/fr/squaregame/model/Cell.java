@@ -18,6 +18,7 @@ public class Cell {
 
     /**
      * Retourne la représentation textuelle de la cellule.
+     * @return la représentation de la cellule
      */
     public String getRepresentation(){
         return representation;
@@ -25,6 +26,7 @@ public class Cell {
 
     /**
      * Indique si la cellule est vide.
+     * @return true si la cellule est vide
      */
     public boolean isEmpty(){
         return representation.equals("   ");

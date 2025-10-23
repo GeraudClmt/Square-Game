@@ -7,6 +7,9 @@ import fr.squaregame.model.Board;
  * Implémentation du jeu du Morpion (TicTacToe) sur une grille 3x3.
  */
 public class TicTacToe extends Game {
+    /**
+     * Constructeur de Tictactoe
+     */
     public TicTacToe(){
         super.width = 3;
         super.height = 3;
