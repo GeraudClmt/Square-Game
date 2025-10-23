@@ -147,8 +147,10 @@ sequenceDiagram
             G->>G: getCoordinatesForArtificialPlayer()
         end
         G->>B: setCell(x, y, P1.getRepresentation())
+        G->>B: toString()
+        B-->>G: "Plateau actuel"
         G->>V: printMessage("Plateau actuel")
-        B-->>G: toString()
+
 
         G->>G: isOver()
     end
