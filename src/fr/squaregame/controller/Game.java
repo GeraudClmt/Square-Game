@@ -11,6 +11,10 @@ import fr.squaregame.view.View;
 
 import java.util.Random;
 
+/**
+ * Contrat et logique partagée pour les jeux sur grille (TicTacToe, Gomoku, Puissance 4).
+ * Gère les joueurs, le plateau, la boucle de jeu et la détection de fin de partie.
+ */
 public abstract class Game {
     protected Player player1;
     protected Player player2;
@@ -21,11 +25,26 @@ public abstract class Game {
     protected int winningLength;
     protected String[] signList;
 
+    /**
+     * Place le pion du joueur aux coordonnées données et incrémente le compteur de tours.
+     *
+     * @param x ligne
+     * @param y colonne
+     * @param player joueur courant
+     */
     public void setOwner(int x, int y, Player player){
         board.setCell(x, y, new Cell(player.getRepresentation()));
         countTurnPlayed++;
     }
 
+    /**
+     * Vérifie si la partie est terminée après le dernier coup.
+     *
+     * @param row ligne du dernier coup
+     * @param col colonne du dernier coup
+     * @throws PlayerWin si un joueur aligne le nombre requis de pions
+     * @throws BoardIsFull si le plateau est rempli sans vainqueur
+     */
     public void isOver(int row, int col)throws PlayerWin, BoardIsFull {
         if(countAlignement(row, col) >= winningLength){
             throw new PlayerWin(board.getCell(row, col).getRepresentation());
@@ -36,10 +55,22 @@ public abstract class Game {
         }
     }
 
+    /**
+     * Représentation textuelle du plateau.
+     * @return la chaîne représentant l'état courant du plateau
+     */
     public String getBoardToString(){
         return  board.toString();
     }
 
+    /**
+     * Calcule la plus grande longueur d'alignement passant par la case (row, col)
+     * dans les 4 directions (horizontale, verticale, et les deux diagonales).
+     *
+     * @param row ligne de référence
+     * @param col colonne de référence
+     * @return la longueur maximale d'alignement trouvée
+     */
     public int countAlignement(int row, int col ){
         int maxOccurence = 0;
         int countOccurence = 0;
@@ -114,6 +145,12 @@ public abstract class Game {
         return maxOccurence;
     }
 
+    /**
+     * Démarre la boucle de jeu: choix des joueurs, alternance des tours, et détection de fin.
+     *
+     * @param interactUser utilitaire d'interaction utilisateur
+     * @param view vue d'affichage
+     */
     public void play(InteractionUtilisateur interactUser, View view){
         view.printMessage("Début du jeux");
         boolean isPlay = true;
@@ -162,6 +199,14 @@ public abstract class Game {
         }
     }
 
+    /**
+     * Demande des coordonnées valides à l'utilisateur pour placer un pion.
+     *
+     * @param interactUser gestionnaire d'interaction
+     * @param view vue d'affichage
+     * @return un tableau [ligne, colonne]
+     * @throws ArrayIndexOutOfBoundsException si la saisie sort du plateau (gérée par relance)
+     */
     public int[] getCoordinates(InteractionUtilisateur interactUser, View view) throws ArrayIndexOutOfBoundsException {
         int line = interactUser.getInputInt("Entrez une ligne") - 1;
         int column = interactUser.getInputInt("Entrez une colonne") - 1;
@@ -174,6 +219,14 @@ public abstract class Game {
         }
     }
 
+    /**
+     * Génère des coordonnées aléatoires valides pour un joueur artificiel.
+     *
+     * @param interactUser gestionnaire d'interaction (non utilisé ici)
+     * @param view vue d'affichage (non utilisée ici)
+     * @return un tableau [ligne, colonne]
+     * @throws ArrayIndexOutOfBoundsException si la case tirée est invalide (relance jusqu'à valide)
+     */
     public int[] getCoordinatesForArtificialPlayer(InteractionUtilisateur interactUser, View view) throws ArrayIndexOutOfBoundsException {
         Random rand = new Random();
         int row = rand.nextInt(0, board.getHeight());
@@ -186,6 +239,15 @@ public abstract class Game {
         return getCoordinatesForArtificialPlayer(interactUser, view);
     }
 
+    /**
+     * Exécute le tour du joueur fourni: obtention des coordonnées, pose du pion et vérification de fin.
+     *
+     * @param player joueur à qui correspond le tour
+     * @param interactUser gestionnaire d'interaction
+     * @param view vue d'affichage
+     * @throws PlayerWin si le coup entraîne une victoire
+     * @throws BoardIsFull si le plateau est rempli sans vainqueur
+     */
     public void playerTurn(Player player, InteractionUtilisateur interactUser, View view)throws PlayerWin, BoardIsFull{
         int[] coordinate = new int[]{};
         while(coordinate.length < 2){

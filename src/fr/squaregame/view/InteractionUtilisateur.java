@@ -3,15 +3,31 @@ package fr.squaregame.view;
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * Gère les interactions utilisateurs via la console (saisie clavier et affichage).
+ */
 public class InteractionUtilisateur {
+    /** Scanner de lecture de l'entrée standard. */
     private final Scanner scanner;
+    /** Vue responsable de l'affichage. */
     private final View view;
 
+    /**
+     * Construit un gestionnaire d'interactions utilisateur.
+     *
+     * @param view composant d'affichage associé
+     */
     public InteractionUtilisateur(View view) {
         this.scanner = new Scanner(System.in);
         this.view = view;
     }
 
+    /**
+     * Demande un entier à l'utilisateur, avec gestion des erreurs et relance en cas de saisie invalide.
+     *
+     * @param message message d'invite
+     * @return l'entier saisi
+     */
     public int getInputInt(String message) {
         try {
             view.printMessage(message);
@@ -23,6 +39,12 @@ public class InteractionUtilisateur {
         }
     }
 
+    /**
+     * Demande à l'utilisateur de choisir un pion parmi une liste.
+     *
+     * @param signList liste des représentations de pions disponibles
+     * @return la représentation choisie
+     */
     public String getSign(String[] signList) {
         view.printMessage("Choisissez un pion");
         for(int i = 1; i < signList.length+1; i ++){
@@ -44,6 +66,12 @@ public class InteractionUtilisateur {
         }
     }
 
+    /**
+     * Pose une question fermée (Y/N) et renvoie la réponse sous forme booléenne.
+     *
+     * @param message question à afficher
+     * @return true si réponse "Y", false si réponse "N"
+     */
     public boolean isPositifResponse(String message) {
         view.printMessage(message);
 
@@ -58,6 +86,12 @@ public class InteractionUtilisateur {
         }
     }
 
+    /**
+     * Affiche une liste de jeux et récupère un choix valide auprès de l'utilisateur.
+     *
+     * @param gameList liste des options de jeux à afficher
+     * @return l'indice du jeu choisi (1..N)
+     */
     public int getGameChoice(List<String> gameList) {
         for (String message : gameList) {
             view.printMessage(message);

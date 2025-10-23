@@ -1,15 +1,10 @@
-package fr.squaregame.controller.games;
+package fr.squaregame.controller;
 
-import fr.squaregame.exceptions.BoardIsFull;
-import fr.squaregame.exceptions.PlayerWin;
-import fr.squaregame.controller.Game;
 import fr.squaregame.model.Board;
-import fr.squaregame.model.player.Player;
-import fr.squaregame.view.InteractionUtilisateur;
-import fr.squaregame.view.View;
 
-import java.util.Random;
-
+/**
+ * Implémentation du jeu Gomoku (aligner 5 pions) sur une grille 15x15.
+ */
 public class Gomoku extends Game {
     public Gomoku(){
         super.width = 15;

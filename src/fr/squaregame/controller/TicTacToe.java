@@ -1,9 +1,11 @@
-package fr.squaregame.controller.games;
+package fr.squaregame.controller;
 
 
-import fr.squaregame.controller.Game;
 import fr.squaregame.model.Board;
 
+/**
+ * Implémentation du jeu du Morpion (TicTacToe) sur une grille 3x3.
+ */
 public class TicTacToe extends Game {
     public TicTacToe(){
         super.width = 3;
