@@ -25,15 +25,15 @@ public class SquareGame {
         switch (choice) {
             case 1 :
                 TicTacToe gameTicTactToe = new TicTacToe();
-                gameTicTactToe.play(interactUser, view);
+                gameTicTactToe.start(interactUser, view);
                 break;
             case 2:
                 Gomoku gomokuGame = new Gomoku();
-                gomokuGame.play(interactUser, view);
+                gomokuGame.start(interactUser, view);
                 break;
             case 3:
                 Connect4 connect4Game = new Connect4();
-                connect4Game.play(interactUser, view);
+                connect4Game.start(interactUser, view);
                 break;
             default:
                 view.printMessage("A bientôt");

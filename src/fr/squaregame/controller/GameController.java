@@ -11,6 +11,8 @@ import fr.squaregame.view.View;
 
 import java.util.Random;
 
+import static fr.squaregame.controller.GameState.*;
+
 /**
  * Contrat et logique partagée pour les jeux sur grille (TicTacToe, Gomoku, Puissance 4).
  * Gère les joueurs, le plateau, la boucle de jeu et la détection de fin de partie.
@@ -24,6 +26,13 @@ public abstract class GameController {
     private int countTurnPlayed;
     private final int winningLength;
     private final String[] signList;
+    private GameState currentGameState;
+    private InteractionUtilisateur interactionUtilisateur;
+    private View view;
+    private String signPlayer1;
+    private String signPlayer2;
+    private Player currentPlayer;
+    private int[] currentMove;
 
     public GameController(int width, int height, String[] signList, int winningLength) {
         this.width = width;
@@ -34,50 +43,53 @@ public abstract class GameController {
         countTurnPlayed = 0;
     }
 
+    public void statesMachine() {
+        switch (currentGameState) {
+            case INIT_GAME -> welcome();
+            case TURN -> playerTurn();
+            case PLAY_MOVE -> setOwner();
+            case CHECK_IF_ENDED -> isOver();
+            case NEXT_PLAYER -> nextPlayer();
+            case WIN -> win();
+            case DRAW -> draw();
+        }
+        if(currentGameState != QUIT){
+            statesMachine();
+        }
+    }
+
+
     public Board getBoard() {
         return board;
     }
 
-    public int getHeight(){
+    public int getHeight() {
         return height;
     }
 
-    /**
-     * Place le pion du joueur aux coordonnées données et incrémente le compteur de tours.
-     *
-     * @param x ligne
-     * @param y colonne
-     * @param player joueur courant
-     */
-    public void setOwner(int x, int y, Player player){
-        board.setCell(x, y, new Cell(player.getRepresentation()));
+    private void setOwner() {
+        board.setCell(currentMove[0], currentMove[1], new Cell(currentPlayer.getRepresentation()));
         countTurnPlayed++;
+        currentGameState = CHECK_IF_ENDED;
     }
 
-    /**
-     * Vérifie si la partie est terminée après le dernier coup.
-     *
-     * @param row ligne du dernier coup
-     * @param col colonne du dernier coup
-     * @throws PlayerWin si un joueur aligne le nombre requis de pions
-     * @throws BoardIsFull si le plateau est rempli sans vainqueur
-     */
-    public void isOver(int row, int col)throws PlayerWin, BoardIsFull {
-        if(countAlignement(row, col) >= winningLength){
-            throw new PlayerWin(board.getCell(row, col).getRepresentation());
-        }
-
-        if(countTurnPlayed == width * height){
-            throw new BoardIsFull("Egalité, le plateau est complet");
+    private void isOver() {
+        if (countAlignement(currentMove[0], currentMove[1]) >= winningLength) {
+            currentGameState = WIN;
+        } else if (countTurnPlayed == width * height) {
+            currentGameState = DRAW;
+        } else {
+            currentGameState = NEXT_PLAYER;
         }
     }
 
     /**
      * Représentation textuelle du plateau.
+     *
      * @return la chaîne représentant l'état courant du plateau
      */
-    public String getBoardToString(){
-        return  board.toString();
+    public String getBoardToString() {
+        return board.toString();
     }
 
     /**
@@ -88,7 +100,7 @@ public abstract class GameController {
      * @param col colonne de référence
      * @return la longueur maximale d'alignement trouvée
      */
-    protected int countAlignement(int row, int col ){
+    protected int countAlignement(int row, int col) {
         int maxOccurence = 0;
         int countOccurence = 0;
         int currentRow = row;
@@ -96,12 +108,12 @@ public abstract class GameController {
         String playerSign = board.getCell(row, col).getRepresentation();
 
         //Horizontale
-        while(currentCol < width && board.getCell(currentRow, currentCol).getRepresentation().equals(playerSign)){
+        while (currentCol < width && board.getCell(currentRow, currentCol).getRepresentation().equals(playerSign)) {
             countOccurence++;
             currentCol++;
         }
-        currentCol = col -1;
-        while(currentCol >= 0 && board.getCell(currentRow, currentCol).getRepresentation().equals(playerSign)){
+        currentCol = col - 1;
+        while (currentCol >= 0 && board.getCell(currentRow, currentCol).getRepresentation().equals(playerSign)) {
             countOccurence++;
             currentCol--;
         }
@@ -112,12 +124,12 @@ public abstract class GameController {
         //Vertical
         countOccurence = 0;
         currentCol = col;
-        while(currentRow < height && board.getCell(currentRow, currentCol).getRepresentation().equals(playerSign)){
+        while (currentRow < height && board.getCell(currentRow, currentCol).getRepresentation().equals(playerSign)) {
             countOccurence++;
             currentRow++;
         }
-        currentRow = row -1;
-        while(currentRow >= 0 && board.getCell(currentRow, currentCol).getRepresentation().equals(playerSign)){
+        currentRow = row - 1;
+        while (currentRow >= 0 && board.getCell(currentRow, currentCol).getRepresentation().equals(playerSign)) {
             countOccurence++;
             currentRow--;
         }
@@ -126,14 +138,14 @@ public abstract class GameController {
         //Diagonal
         countOccurence = 0;
         currentRow = row;
-        while(currentRow < height && currentCol < width && board.getCell(currentRow, currentCol).getRepresentation().equals(playerSign)){
+        while (currentRow < height && currentCol < width && board.getCell(currentRow, currentCol).getRepresentation().equals(playerSign)) {
             countOccurence++;
             currentRow++;
             currentCol++;
         }
-        currentRow = row -1;
-        currentCol = col -1;
-        while(currentRow >= 0 && currentCol >= 0 && board.getCell(currentRow, currentCol).getRepresentation().equals(playerSign)){
+        currentRow = row - 1;
+        currentCol = col - 1;
+        while (currentRow >= 0 && currentCol >= 0 && board.getCell(currentRow, currentCol).getRepresentation().equals(playerSign)) {
             countOccurence++;
             currentRow--;
             currentCol--;
@@ -144,14 +156,14 @@ public abstract class GameController {
         countOccurence = 0;
         currentRow = row;
         currentCol = col;
-        while(currentRow >= 0 && currentCol < width && board.getCell(currentRow, currentCol).getRepresentation().equals(playerSign)){
+        while (currentRow >= 0 && currentCol < width && board.getCell(currentRow, currentCol).getRepresentation().equals(playerSign)) {
             countOccurence++;
             currentRow--;
             currentCol++;
         }
-        currentRow = row +1;
-        currentCol = col -1;
-        while(currentRow < height && currentCol >= 0 && board.getCell(currentRow, currentCol).getRepresentation().equals(playerSign)){
+        currentRow = row + 1;
+        currentCol = col - 1;
+        while (currentRow < height && currentCol >= 0 && board.getCell(currentRow, currentCol).getRepresentation().equals(playerSign)) {
             countOccurence++;
             currentRow++;
             currentCol--;
@@ -166,61 +178,67 @@ public abstract class GameController {
      * Démarre la boucle de jeu: choix des joueurs, alternance des tours, et détection de fin.
      *
      * @param interactUser utilitaire d'interaction utilisateur
-     * @param view vue d'affichage
+     * @param view         vue d'affichage
      */
-    public void play(InteractionUtilisateur interactUser, View view){
-        view.printMessage("Début du jeux");
-        boolean isPlay = true;
-        String signPlayer1;
-        String signPlayer2;
+    public void start(InteractionUtilisateur interactUser, View view) {
+        this.interactionUtilisateur = interactUser;
+        this.view = view;
+        currentGameState = INIT_GAME;
+        statesMachine();
+    }
 
-        boolean isHumanPlayer1 = interactUser.isPositifResponse("Le premier joueur est un humain ? Y / N");
-        if(isHumanPlayer1){
-            signPlayer1 = interactUser.getSign(signList);
+    protected void welcome() {
+        view.printMessage("Début du jeu");
+        boolean isHumanPlayer1 = interactionUtilisateur.isPositifResponse("Le premier joueur est un humain ? Y / N");
+        if (isHumanPlayer1) {
+            signPlayer1 = interactionUtilisateur.getSign(signList);
             player1 = new HumanPlayer(signPlayer1);
-        }else {
+        } else {
             signPlayer1 = signList[0];
             player1 = new ArtificialPlayer(signPlayer1);
         }
 
-        if(signPlayer1.equals(signList[0])){
+        if (signPlayer1.equals(signList[0])) {
             signPlayer2 = signList[1];
-        }else{
+        } else {
             signPlayer2 = signList[0];
         }
 
-        boolean isHumanPlayer2 = interactUser.isPositifResponse("Le deuxième joueur est un humain ? Y / N");
-        if(isHumanPlayer2){
+        boolean isHumanPlayer2 = interactionUtilisateur.isPositifResponse("Le deuxième joueur est un humain ? Y / N");
+        if (isHumanPlayer2) {
             player2 = new HumanPlayer(signPlayer2);
-        }else{
+        } else {
             player2 = new ArtificialPlayer(signPlayer2);
         }
 
         view.printMessage("Joueur 1 : " + signPlayer1 + " et Joueur 2 : " + signPlayer2);
-
-        while(isPlay){
-            try{
-                view.printMessage(board.toString());
-                view.printMessage("\nAu tour du joueur 1");
-                playerTurn(player1, interactUser, view);
-                view.printMessage("\nAu tour du joueur 2");
-                playerTurn(player2, interactUser, view);
-
-            } catch (PlayerWin e) {
-                view.printMessage("Le joueur " + e.getMessage() + " gagne");
-                isPlay = false;
-            } catch (BoardIsFull e){
-                view.printMessage(e.getMessage());
-                isPlay =  false;
-            }
-        }
+        currentPlayer = player1;
+        currentGameState = TURN;
     }
+
+    private void nextPlayer() {
+       currentPlayer = currentPlayer == player1 ? player2 : player1;
+       currentGameState = TURN;
+    }
+
+    private void win() {
+        view.printMessage(board.toString());
+        view.printMessage("Le joueur " + currentPlayer.getRepresentation() + " gagne");
+        currentGameState = QUIT;
+    }
+
+    private void draw() {
+        view.printMessage(board.toString());
+        view.printMessage("Egalité");
+        currentGameState = QUIT;
+    }
+
 
     /**
      * Demande des coordonnées valides à l'utilisateur pour placer un pion.
      *
      * @param interactUser gestionnaire d'interaction
-     * @param view vue d'affichage
+     * @param view         vue d'affichage
      * @return un tableau [ligne, colonne]
      * @throws ArrayIndexOutOfBoundsException si la saisie sort du plateau (gérée par relance)
      */
@@ -228,10 +246,10 @@ public abstract class GameController {
         int line = interactUser.getInputInt("Entrez une ligne") - 1;
         int column = interactUser.getInputInt("Entrez une colonne") - 1;
 
-        if(!board.getCell(line, column).getRepresentation().equals("   ")){
+        if (!board.getCell(line, column).getRepresentation().equals("   ")) {
             view.printMessage("Case déja prise\n");
             return getCoordinates(interactUser, view);
-        }else{
+        } else {
             return new int[]{line, column};
         }
     }
@@ -240,7 +258,7 @@ public abstract class GameController {
      * Génère des coordonnées aléatoires valides pour un joueur artificiel.
      *
      * @param interactUser gestionnaire d'interaction (non utilisé ici)
-     * @param view vue d'affichage (non utilisée ici)
+     * @param view         vue d'affichage (non utilisée ici)
      * @return un tableau [ligne, colonne]
      * @throws ArrayIndexOutOfBoundsException si la case tirée est invalide (relance jusqu'à valide)
      */
@@ -256,33 +274,25 @@ public abstract class GameController {
         return getCoordinatesForArtificialPlayer(interactUser, view);
     }
 
-    /**
-     * Exécute le tour du joueur fourni: obtention des coordonnées, pose du pion et vérification de fin.
-     *
-     * @param player joueur à qui correspond le tour
-     * @param interactUser gestionnaire d'interaction
-     * @param view vue d'affichage
-     * @throws PlayerWin si le coup entraîne une victoire
-     * @throws BoardIsFull si le plateau est rempli sans vainqueur
-     */
-    private void playerTurn(Player player, InteractionUtilisateur interactUser, View view)throws PlayerWin, BoardIsFull{
-        int[] coordinate = new int[]{};
-        while(coordinate.length < 2){
-            try{
-                if(player instanceof ArtificialPlayer){
-                    coordinate = getCoordinatesForArtificialPlayer(interactUser, view);
-                }else{
-                    coordinate = getCoordinates(interactUser, view);
-                }
 
-            } catch (ArrayIndexOutOfBoundsException e) {
-                view.printMessage("Coordonnées en dehors du plateau\n");
+    private void playerTurn() throws PlayerWin, BoardIsFull {
+        view.printMessage(board.toString());
+        view.printMessage("\nAu tour du joueur " + currentPlayer.getRepresentation());
+        currentMove = null;
+        try {
+            if (currentPlayer instanceof ArtificialPlayer) {
+                currentMove = getCoordinatesForArtificialPlayer(interactionUtilisateur, view);
+            } else {
+                currentMove = getCoordinates(interactionUtilisateur, view);
             }
+
+        } catch (ArrayIndexOutOfBoundsException e) {
+            view.printMessage("Coordonnées en dehors du plateau\n");
         }
 
-        setOwner(coordinate[0], coordinate[1], player);
-        view.printMessage(board.toString());
-
-        isOver(coordinate[0], coordinate[1]);
+        if (currentMove != null) {
+            currentGameState = PLAY_MOVE;
+        }
     }
+
 }
