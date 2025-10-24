@@ -5,7 +5,7 @@ package fr.squaregame.controller;
 /**
  * Implémentation du jeu du Morpion (TicTacToe) sur une grille 3x3.
  */
-public class TicTacToe extends Game {
+public class TicTacToe extends GameController {
     /**
      * Constructeur de Tictactoe
      */

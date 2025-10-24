@@ -4,7 +4,7 @@ package fr.squaregame.controller;
 /**
  * Implémentation du jeu Gomoku (aligner 5 pions) sur une grille 15x15.
  */
-public class Gomoku extends Game {
+public class Gomoku extends GameController {
     /**
      * Constructeur de Gomoku
      */

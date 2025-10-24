@@ -8,7 +8,7 @@ import java.util.Random;
 /**
  * Implémentation du Puissance 4 sur une grille 7x6 avec gravité verticale des pions.
  */
-public class Connect4 extends Game {
+public class Connect4 extends GameController {
     private final Random rand = new Random();
 
     /**

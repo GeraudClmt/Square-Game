@@ -15,7 +15,7 @@ import java.util.Random;
  * Contrat et logique partagée pour les jeux sur grille (TicTacToe, Gomoku, Puissance 4).
  * Gère les joueurs, le plateau, la boucle de jeu et la détection de fin de partie.
  */
-public abstract class Game {
+public abstract class GameController {
     private Player player1;
     private Player player2;
     private final Board board;
@@ -25,7 +25,7 @@ public abstract class Game {
     private final int winningLength;
     private final String[] signList;
 
-    public Game(int width, int height, String[] signList, int winningLength) {
+    public GameController(int width, int height, String[] signList, int winningLength) {
         this.width = width;
         this.height = height;
         this.signList = signList;
