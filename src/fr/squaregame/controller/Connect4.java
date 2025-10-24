@@ -1,6 +1,5 @@
 package fr.squaregame.controller;
 
-import fr.squaregame.model.Board;
 import fr.squaregame.view.InteractionUtilisateur;
 import fr.squaregame.view.View;
 
@@ -16,12 +15,7 @@ public class Connect4 extends Game {
      * Initialise une partie de Puissance 4 (7 colonnes, 6 lignes) et une condition de victoire à 4 alignés.
      */
     public Connect4(){
-        super.width = 7;
-        super.height = 6;
-        super.signList = new String[]{"\u001B[91m●\u001B[0m", "\u001B[93m●\u001B[0m"};
-        super.board = new Board(height, width, " ");
-        super.winningLength = 4;
-        super.countTurnPlayed = 0;
+        super(7, 6, new String[]{"\u001B[91m●\u001B[0m", "\u001B[93m●\u001B[0m"}, 4);
     }
 
     /**
@@ -36,7 +30,7 @@ public class Connect4 extends Game {
     public int[] getCoordinates(InteractionUtilisateur interactUser, View view) throws ArrayIndexOutOfBoundsException {
         int column = interactUser.getInputInt("Entrez une colonne") - 1;
 
-        if(!board.getCell(0, column).getRepresentation().equals("   ")){
+        if(!getBoard().getCell(0, column).getRepresentation().equals("   ")){
             view.printMessage("Colonne pleine\n");
             return getCoordinates(interactUser, view);
         }else{
@@ -49,9 +43,9 @@ public class Connect4 extends Game {
      */
     @Override
     public int[] getCoordinatesForArtificialPlayer(InteractionUtilisateur interactUser, View view) throws ArrayIndexOutOfBoundsException {
-        int col = rand.nextInt(0, board.getWidth());
+        int col = rand.nextInt(0, getBoard().getWidth());
 
-        if (board.getCell(0, col).getRepresentation().equals("   ")) {
+        if (getBoard().getCell(0, col).getRepresentation().equals("   ")) {
             return new int[]{getRow(col), col};
         }
 
@@ -65,8 +59,8 @@ public class Connect4 extends Game {
      * @return la ligne disponible la plus basse, ou -1 si la colonne est pleine
      */
     private int getRow(int col){
-        for(int i = height-1; i >= 0; i--){
-            if(board.getCell(i, col).getRepresentation().equals("   ")){
+        for(int i = getHeight()-1; i >= 0; i--){
+            if(getBoard().getCell(i, col).getRepresentation().equals("   ")){
                 return i;
             }
         }

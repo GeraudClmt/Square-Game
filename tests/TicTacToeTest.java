@@ -1,7 +1,7 @@
 import fr.squaregame.model.player.HumanPlayer;
 import fr.squaregame.model.player.Player;
-import fr.squaregame.exceptions.BoardIsFull;
-import fr.squaregame.exceptions.PlayerWin;
+import fr.squaregame.model.exceptions.BoardIsFull;
+import fr.squaregame.model.exceptions.PlayerWin;
 import fr.squaregame.controller.TicTacToe;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;

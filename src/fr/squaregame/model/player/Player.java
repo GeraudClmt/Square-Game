@@ -4,8 +4,7 @@ package fr.squaregame.model.player;
  * Représente un joueur (humain ou artificiel) avec une représentation de pion.
  */
 public abstract class Player {
-    protected final String representation;
-
+    private final String representation;
     /**
      * Construit un joueur avec la représentation donnée.
      *

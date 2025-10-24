@@ -1,4 +1,4 @@
-package fr.squaregame.exceptions;
+package fr.squaregame.model.exceptions;
 
 /**
  * Exception indiquant que le plateau est entièrement rempli sans vainqueur.

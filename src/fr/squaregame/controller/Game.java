@@ -1,7 +1,7 @@
 package fr.squaregame.controller;
 
-import fr.squaregame.exceptions.BoardIsFull;
-import fr.squaregame.exceptions.PlayerWin;
+import fr.squaregame.model.exceptions.BoardIsFull;
+import fr.squaregame.model.exceptions.PlayerWin;
 import fr.squaregame.model.*;
 import fr.squaregame.model.player.ArtificialPlayer;
 import fr.squaregame.model.player.HumanPlayer;
@@ -16,14 +16,31 @@ import java.util.Random;
  * Gère les joueurs, le plateau, la boucle de jeu et la détection de fin de partie.
  */
 public abstract class Game {
-    protected Player player1;
-    protected Player player2;
-    protected Board board;
-    protected int width;
-    protected int height;
-    protected int countTurnPlayed;
-    protected int winningLength;
-    protected String[] signList;
+    private Player player1;
+    private Player player2;
+    private final Board board;
+    private final int width;
+    private final int height;
+    private int countTurnPlayed;
+    private final int winningLength;
+    private final String[] signList;
+
+    public Game(int width, int height, String[] signList, int winningLength) {
+        this.width = width;
+        this.height = height;
+        this.signList = signList;
+        this.board = new Board(height, width, " ");
+        this.winningLength = winningLength;
+        countTurnPlayed = 0;
+    }
+
+    public Board getBoard() {
+        return board;
+    }
+
+    public int getHeight(){
+        return height;
+    }
 
     /**
      * Place le pion du joueur aux coordonnées données et incrémente le compteur de tours.

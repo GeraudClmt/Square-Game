@@ -1,4 +1,4 @@
-package fr.squaregame.exceptions;
+package fr.squaregame.model.exceptions;
 
 /**
  * Exception signalant qu'un joueur a remporté la partie.
