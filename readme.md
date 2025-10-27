@@ -50,19 +50,33 @@ classDiagram
     }
     class Game{
         <<abstract>>
-        #player1 : Player
-        #player2 : Player
-        #board : Board
-        #width : int
-        #height : int
-        #countTurnPlayed : int
-        #winningLength : int
-        #signList : String[]
-        +setOwner() void
-        +isOver() void
-        +getBoardToString() String
-        +countAlignement() int
-        +play(): void
+        -player1 : Player
+        -player2 : Player
+        -board : Board
+        -width : int
+        -height : int
+        -countTurnPlayed : int
+        -winningLength : int
+        -signList : String[]
+        -currentGameState : GameState
+        -interactionUtilisateur : InteractionUtilisateur
+        -view : View
+        -signPlayer1 : String
+        -signPlayer2 : String
+        -currentPlayer : Player
+        -currentMove : int[]
+        
+        +statesMachine() : void
+        +getBoard(): Board
+        +getHeight-) : int
+        -setOwner() void
+        -isOver() void
+        #countAlignement() int
+        +start(): void
+        #welcome() : void
+        -nextPlayer() : void
+        -win() : void
+        -draw() : void
         +getCoordinates() int[]
         +getCoordinatesForArtificialPlayer() int[]
         +playerTurn() void
