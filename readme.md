@@ -68,7 +68,7 @@ classDiagram
         
         +statesMachine() : void
         +getBoard(): Board
-        +getHeight-) : int
+        +getHeight() : int
         -setOwner() void
         -isOver() void
         #countAlignement() int
